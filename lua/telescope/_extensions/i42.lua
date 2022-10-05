@@ -8,6 +8,7 @@ return require("telescope").register_extension({
 		config = config or {}
 		config.colorDir = ext_config.colorDir or vim.fn.stdpath("data") .. "/colorDir"
 		config.cwd = ext_config.colorDir or vim.fn.stdpath("data") .. "/colorDir"
+		config.colors = ext_config.colors
 		color231 = Color23:new(ext_config)
 		for key, value in pairs(config) do
 			opts[key] = value

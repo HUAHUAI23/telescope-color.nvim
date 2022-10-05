@@ -3,7 +3,7 @@ local finders = require("telescope.finders")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
--- local extconfig = {
+-- local ext_config = {
 -- 	colors = {
 -- 		{ "🥮", "deus", "deus.lua" },
 -- 		{ "", "xxx", "xxx.lua" },
@@ -29,7 +29,7 @@ function Color23:start(opts)
 		.new(opts, {
 			prompt_title = "Manage Color Theme",
 			finder = finders.new_table({
-				-- results = { { "🥮", "deus", "deus.lua" }, { "", "xxx", "xxx.lua" } },
+				-- results = ext_config.colors,
 				results = opts.colors,
 				entry_maker = function(entry)
 					return {
@@ -44,16 +44,6 @@ function Color23:start(opts)
 			}),
 			previewer = conf.file_previewer(opts),
 			sorter = conf.file_sorter(opts),
-			-- attach_mappings = function(prompt_bufnr, map)
-			-- 	actions.select_default:replace(function()
-			-- 		actions.close(prompt_bufnr)
-			-- 		local selection = action_state.get_selected_entry()
-			-- 		print(vim.pretty_print(selection))
-			-- 		print(vim.pretty_print(selection["filename"]))
-			-- 		print(vim.pretty_print(selection[3]))
-			-- 	end)
-			-- 	return true
-			-- end,
 			attach_mappings = function(prompt_bufnr, map)
 				map(
 					"n",
@@ -90,6 +80,10 @@ function Color23:start(opts)
 		:find()
 end
 
--- test
--- local test = Color23:new()
--- test:start()
+-- 	colors = {
+-- 		{ "🥮", "deus", "deus.lua" },
+-- 		{ "", "xxx", "xxx.lua" },
+-- 	},
+-- 	colorDir = "xxxxx",
+
+return Color23
