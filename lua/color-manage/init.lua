@@ -53,7 +53,7 @@ function Color23:start(opts)
 						local load_color = function()
 							actions.close(prompt_bufnr)
 							local selection = action_state.get_selected_entry()
-							print(vim.pretty_print(selection))
+							-- print(vim.pretty_print(selection))
 							-- source colorscheme
 							vim.api.nvim_cmd(
 								vim.api.nvim_parse_cmd("source " .. opts.colorDir .. "/" .. selection["filename"], {}),
