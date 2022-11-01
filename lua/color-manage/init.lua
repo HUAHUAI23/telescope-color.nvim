@@ -22,7 +22,7 @@ function Color23:new(opts)
 end
 function Color23:start(opts)
 	opts = opts or {}
-	-- cwd should same with find location if not the preview module wouldn't work
+	-- the cwd value should be the same with where the preview file located if not the preview module wouldn't work
 	opts.cwd = opts.cwd or vim.fn.stdpath("data") .. "/colorDir"
 	opts.colorDir = opts.colorDir or vim.fn.stdpath("data") .. "/colorDir"
 	pickers
@@ -37,6 +37,7 @@ function Color23:start(opts)
 						display = function(tbl)
 							return tbl.value[1] .. " " .. tbl.value[2]
 						end,
+						cwd = opts.cwd,
 						ordinal = entry[2],
 						filename = entry[3],
 					}
@@ -52,6 +53,7 @@ function Color23:start(opts)
 						local load_color = function()
 							actions.close(prompt_bufnr)
 							local selection = action_state.get_selected_entry()
+							print(vim.pretty_print(selection))
 							-- source colorscheme
 							vim.api.nvim_cmd(
 								vim.api.nvim_parse_cmd("source " .. opts.colorDir .. "/" .. selection["filename"], {}),
