@@ -174,6 +174,7 @@ Color23.caseList = {
 		if vim.fn.exists("syntax_on") then
 			vim.cmd("syntax reset")
 		end
+		vim.opt.background = "dark"
 		require("nvim-tundra").setup({
 			transparent_background = true,
 			plugins = {
@@ -201,8 +202,6 @@ Color23.caseList = {
 				types = { italic = true },
 			},
 		})
-
-		vim.opt.background = "dark"
 		local colorscheme = "tundra"
 		local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 		if not status_ok then

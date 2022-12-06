@@ -4,6 +4,7 @@ vim.cmd("highlight clear")
 if vim.fn.exists("syntax_on") then
 	vim.cmd("syntax reset")
 end
+vim.opt.background = "dark"
 require("nvim-tundra").setup({
 	transparent_background = true,
 	plugins = {
@@ -32,7 +33,6 @@ require("nvim-tundra").setup({
 	},
 })
 
-vim.opt.background = "dark"
 local colorscheme = "tundra"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then

@@ -55,6 +55,7 @@ r("plugin-config.fidget")
 r("plugin-config.nvim-treesitter")
 r("plugin-config.telescope")
 
+-- todo-comments
 vim.cmd([[
     highlight TodoFgTODO guifg=#add8e6
     highlight TodoBgTODO gui=bold guifg=#2c323b guibg=#add8e6
