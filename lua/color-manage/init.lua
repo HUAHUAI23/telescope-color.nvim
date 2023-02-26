@@ -62,6 +62,7 @@ Color23.caseList = {
 		if vim.fn.exists("syntax_on") then
 			vim.cmd("syntax reset")
 		end
+		vim.cmd("syntax clear")
 		vim.o.background = "dark"
 		vim.g.deus_termcolors = 256
 		local colorscheme = "deus"
@@ -364,8 +365,8 @@ Color23.caseList = {
 		vim.api.nvim_set_hl(0, "DashboardCenter", { fg = "#bae6fd", bold = true })
 		vim.api.nvim_set_hl(0, "DashboardFooter", { fg = "#bae6fd", bold = true })
 		-- lualine
-		vim.api.nvim_set_hl(0, "lualine_a_normal", { bg = "#f3a0a0", bold = true })
-		vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#303740", bold = true })
+		vim.api.nvim_set_hl(0, "lualine_a_normal", { fg = "#F7F7F7", bg = "#f3a0a0", bold = true })
+		vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#000000", bold = true })
 		-- bufferline
 		vim.api.nvim_set_hl(0, "BufferLineTabClose", { fg = "#f3a0a0", bold = true })
 		vim.api.nvim_set_hl(0, "BufferLineSeparator", { fg = "#f3a0a0", bold = true })
