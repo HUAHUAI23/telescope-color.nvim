@@ -1,5 +1,3 @@
-local api = vim.api
-
 vim.cmd("highlight clear")
 if vim.fn.exists("syntax_on") then
 	vim.cmd("syntax reset")
@@ -39,17 +37,55 @@ if not status_ok then
 	vim.notify("colorscheme: " .. colorscheme .. " 没有找到！")
 	return
 end
+local reload_module = function(module_name, starts_with_only)
+	-- Default to starts with only
+	if starts_with_only == nil then
+		starts_with_only = true
+	end
 
-local r
-if pcall(require, "plenary") then
-	local reload = require("plenary.reload").reload_module
+	-- TODO: Might need to handle cpath / compiled lua packages? Not sure.
+	-- more info: https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/reload.lua
+	local matcher
+	if not starts_with_only then
+		matcher = function(pack)
+			return string.find(pack, module_name, 1, true)
+		end
+	else
+		local module_name_pattern = vim.pesc(module_name)
+		matcher = function(pack)
+			return string.find(pack, "^" .. module_name_pattern)
+		end
+	end
 
-	r = function(name)
-		reload(name)
-		return require(name)
+	-- Handle impatient.nvim automatically.
+	local luacache = (_G.__luacache or {}).cache
+
+	for pack, _ in pairs(package.loaded) do
+		if matcher(pack) then
+			package.loaded[pack] = nil
+
+			if luacache then
+				luacache[pack] = nil
+			end
+		end
 	end
 end
 
+local r = function(module_name, config_path, starts_with_only)
+	reload_module(module_name, starts_with_only)
+	local ok, _ = pcall(require, config_path or module_name)
+	if not ok then
+		print("Error loading " .. config_path or module_name)
+		return
+	end
+end
+
+-- plugin reload
+r("bufferline", "plugin-config.bufferline")
+r("lualine", "plugin-config.lualine")
+r("todo-comments", "plugin-config.todo-comments")
+r("fidget", "plugin-config.fidget")
+r("telescope", "plugin-config.telescope")
 -- vim.cmd([[
 --     highlight FidgetTitle ctermbg=None guibg=None
 --     highlight FidgetTask guibg=None guifg=#111827
@@ -75,24 +111,22 @@ end
 -- api.nvim_set_hl(0, "WinBar", { ctermfg = 142, fg = "#bae6fd", bg = "none", bold = true })
 -- api.nvim_set_hl(0, "WinBarNC", { ctermfg = 142, fg = "#bae6fd", bg = "none", bold = true })
 
--- r("plugin-config.bufferline")
-
 -- editor
 -- ------------------------------
-api.nvim_set_hl(0, "NormalFloat", { fg = "#F9FAFB", bg = "#2C323B" })
-api.nvim_set_hl(0, "NormalNC", { fg = "#F9FAFB", bg = "#2C323B" })
-api.nvim_set_hl(0, "Normal", { fg = "#F9FAFB", bg = "#2C323B" })
-api.nvim_set_hl(0, "NonText", { ctermfg = 142, fg = "grey50", bold = true })
+vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#F9FAFB", bg = "#2C323B" })
+vim.api.nvim_set_hl(0, "NormalNC", { fg = "#F9FAFB", bg = "#2C323B" })
+vim.api.nvim_set_hl(0, "Normal", { fg = "#F9FAFB", bg = "#2C323B" })
+vim.api.nvim_set_hl(0, "NonText", { ctermfg = 142, fg = "grey50", bold = true })
 
 -- api.nvim_set_hl(0, "FloatBorder", { fg = "#f3a0a0", bg = "none", bold = true })
-api.nvim_set_hl(0, "FloatBorder", { fg = "#bae6fd", bg = "none", bold = true })
-api.nvim_set_hl(0, "VertSplit", { bg = "none", ctermbg = "none", fg = "#bae6fd", bold = true })
+vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#bae6fd", bg = "none", bold = true })
+vim.api.nvim_set_hl(0, "VertSplit", { bg = "none", ctermbg = "none", fg = "#bae6fd", bold = true })
 -- api.nvim_set_hl(0, "VertSplit", { bg = "none", ctermbg = "none", fg = "#f3a0a0", bold = true })
 
 -- api.nvim_set_hl(0, "CursorLine", { bg = "#f3a0a0", fg = "#6b7280", bold = true })
 -- api.nvim_set_hl(0, "CursorLine", { bg = "#f3a0a0", fg = "#FFFFFF", bold = true })
 -- api.nvim_set_hl(0, "CursorLine", { bg = "#f3a0a0" })
-api.nvim_set_hl(0, "ColorColumn", { bg = "#b5e8b0", fg = "#6b7280", bold = true })
+vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#b5e8b0", fg = "#6b7280", bold = true })
 -- don't display the colorcolumn
 vim.cmd("highlight clear ColorColumn")
 
@@ -101,21 +135,20 @@ vim.cmd("highlight clear ColorColumn")
 -- api.nvim_set_hl(0, "DashboardHeader", { fg = "#f5b3b3", bold = true })
 -- api.nvim_set_hl(0, "DashboardCenter", { fg = "#f5b3b3", bold = true })
 -- api.nvim_set_hl(0, "DashboardFooter", { fg = "#f5b3b3", bold = true })
-api.nvim_set_hl(0, "DashboardHeader", { fg = "#bae6fd", bold = true })
-api.nvim_set_hl(0, "DashboardCenter", { fg = "#bae6fd", bold = true })
-api.nvim_set_hl(0, "DashboardFooter", { fg = "#bae6fd", bold = true })
+vim.api.nvim_set_hl(0, "DashboardHeader", { fg = "#bae6fd", bold = true })
+vim.api.nvim_set_hl(0, "DashboardCenter", { fg = "#bae6fd", bold = true })
+vim.api.nvim_set_hl(0, "DashboardFooter", { fg = "#bae6fd", bold = true })
 
 -- lualine
-r("plugin-config.lualine")
-api.nvim_set_hl(0, "lualine_a_normal", { bg = "#f3a0a0", bold = true })
-api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#303740", bold = true })
+vim.api.nvim_set_hl(0, "lualine_a_normal", { bg = "#f3a0a0", bold = true })
+vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#303740", bold = true })
 
 -- bufferline
 -- api.nvim_set_hl(0, "BufferLineCloseButton", { fg = "#f3a0a0", bold = true })
-api.nvim_set_hl(0, "BufferLineTabClose", { fg = "#f3a0a0", bold = true })
-api.nvim_set_hl(0, "BufferLineSeparator", { fg = "#f3a0a0", bold = true })
-api.nvim_set_hl(0, "BufferLineBufferSelected", { fg = "#f3a0a0", bold = true, italic = true })
-api.nvim_set_hl(0, "BufferLineCloseButtonSelected", { fg = "#f3a0a0", bold = true })
+vim.api.nvim_set_hl(0, "BufferLineTabClose", { fg = "#f3a0a0", bold = true })
+vim.api.nvim_set_hl(0, "BufferLineSeparator", { fg = "#f3a0a0", bold = true })
+vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { fg = "#f3a0a0", bold = true, italic = true })
+vim.api.nvim_set_hl(0, "BufferLineCloseButtonSelected", { fg = "#f3a0a0", bold = true })
 
 -- navic
 vim.api.nvim_set_hl(0, "NavicIconsFile", { default = true, fg = "#FBC19D", bold = true })
@@ -151,9 +184,3 @@ vim.api.nvim_set_hl(0, "NavicSeparator", { default = true, fg = "#f5b3b3", bold 
 -- sunset
 -- #355c7d #725a7a #c56c86 #ff7582 #E5958e #fdb095
 --
-
--- plugin reload
-r("plugin-config.todo-comments")
-r("plugin-config.fidget")
-r("plugin-config.nvim-treesitter")
-r("plugin-config.telescope")
