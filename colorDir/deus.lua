@@ -63,7 +63,7 @@ r("fidget", "plugin-config.fidget")
 r("telescope", "plugin-config.telescope")
 
 local function set_editor_hl()
-	vim.api.nvim_set_hl(0, "NormalFloat", { ctermfg = 223, ctermbg = 235, fg = "#ebdbb2", bg = "#2c323b", bold = true })
+	vim.api.nvim_set_hl(0, "NormalFloat", { ctermfg = 223, ctermbg = 235, fg = "#ebdbb2", bg = "#2c323b" })
 	vim.api.nvim_set_hl(0, "NonText", { ctermfg = 142, fg = "grey50", bold = true })
 	vim.api.nvim_set_hl(0, "Cursor", { bold = true })
 	vim.api.nvim_set_hl(0, "SignColumn", { ctermbg = "none", bg = "none" })
