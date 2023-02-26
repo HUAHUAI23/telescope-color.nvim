@@ -3,7 +3,6 @@ if vim.fn.exists("syntax_on") then
 	vim.cmd("syntax reset")
 end
 vim.o.background = "dark"
-vim.g.deus_termcolors = 256
 local colorscheme = "deus"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
@@ -190,6 +189,7 @@ set_notify_hl()
 set_indenline_hl()
 set_nvimtree_hl()
 set_navic_hl()
+vim.cmd("highlight clear ColorColumn")
 
 local terminal_colors = {
 	terminal_color_0 = "#2C323B",

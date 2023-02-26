@@ -140,8 +140,8 @@ vim.api.nvim_set_hl(0, "DashboardCenter", { fg = "#bae6fd", bold = true })
 vim.api.nvim_set_hl(0, "DashboardFooter", { fg = "#bae6fd", bold = true })
 
 -- lualine
-vim.api.nvim_set_hl(0, "lualine_a_normal", { bg = "#f3a0a0", bold = true })
-vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#303740", bold = true })
+vim.api.nvim_set_hl(0, "lualine_a_normal", { fg = "#F7F7F7", bg = "#f3a0a0", bold = true })
+vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f3a0a0", bg = "#000000", bold = true })
 
 -- bufferline
 -- api.nvim_set_hl(0, "BufferLineCloseButton", { fg = "#f3a0a0", bold = true })
