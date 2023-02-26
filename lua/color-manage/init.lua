@@ -72,56 +72,6 @@ Color23.caseList = {
 		end
 		vim.g.deus_termcolors = 256
 
-		local reload_module = function(module_name, starts_with_only)
-			-- Default to starts with only
-			if starts_with_only == nil then
-				starts_with_only = true
-			end
-
-			-- TODO: Might need to handle cpath / compiled lua packages? Not sure.
-			-- more info: https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/reload.lua
-			local matcher
-			if not starts_with_only then
-				matcher = function(pack)
-					return string.find(pack, module_name, 1, true)
-				end
-			else
-				local module_name_pattern = vim.pesc(module_name)
-				matcher = function(pack)
-					return string.find(pack, "^" .. module_name_pattern)
-				end
-			end
-
-			-- Handle impatient.nvim automatically.
-			local luacache = (_G.__luacache or {}).cache
-
-			for pack, _ in pairs(package.loaded) do
-				if matcher(pack) then
-					package.loaded[pack] = nil
-
-					if luacache then
-						luacache[pack] = nil
-					end
-				end
-			end
-		end
-
-		local r = function(module_name, config_path, starts_with_only)
-			reload_module(module_name, starts_with_only)
-			local ok, _ = pcall(require, config_path or module_name)
-			if not ok then
-				print("Error loading " .. config_path or module_name)
-				return
-			end
-		end
-
-		-- plugin reload
-		r("bufferline", "plugin-config.bufferline")
-		r("lualine", "plugin-config.lualine")
-		r("todo-comments", "plugin-config.todo-comments")
-		r("fidget", "plugin-config.fidget")
-		r("telescope", "plugin-config.telescope")
-
 		local function set_editor_hl()
 			vim.api.nvim_set_hl(
 				0,
@@ -314,54 +264,6 @@ Color23.caseList = {
 			return
 		end
 
-		local reload_module = function(module_name, starts_with_only)
-			-- Default to starts with only
-			if starts_with_only == nil then
-				starts_with_only = true
-			end
-
-			-- TODO: Might need to handle cpath / compiled lua packages? Not sure.
-			-- more info: https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/reload.lua
-			local matcher
-			if not starts_with_only then
-				matcher = function(pack)
-					return string.find(pack, module_name, 1, true)
-				end
-			else
-				local module_name_pattern = vim.pesc(module_name)
-				matcher = function(pack)
-					return string.find(pack, "^" .. module_name_pattern)
-				end
-			end
-
-			-- Handle impatient.nvim automatically.
-			local luacache = (_G.__luacache or {}).cache
-
-			for pack, _ in pairs(package.loaded) do
-				if matcher(pack) then
-					package.loaded[pack] = nil
-
-					if luacache then
-						luacache[pack] = nil
-					end
-				end
-			end
-		end
-
-		local r = function(module_name, config_path, starts_with_only)
-			reload_module(module_name, starts_with_only)
-			local ok, _ = pcall(require, config_path or module_name)
-			if not ok then
-				print("Error loading " .. config_path or module_name)
-				return
-			end
-		end
-		-- plugin reload
-		r("bufferline", "plugin-config.bufferline")
-		r("lualine", "plugin-config.lualine")
-		r("todo-comments", "plugin-config.todo-comments")
-		r("fidget", "plugin-config.fidget")
-		r("telescope", "plugin-config.telescope")
 		-- editor
 		vim.api.nvim_set_hl(0, "NormalFloat", { ctermfg = 223, ctermbg = 237, fg = "#d3c6aa", bg = "#2C323B" })
 		vim.api.nvim_set_hl(0, "NormalNC", { fg = "#F9FAFB", bg = "#2C323B" })
@@ -449,54 +351,6 @@ Color23.caseList = {
 			vim.notify("colorscheme: " .. colorscheme .. " 没有找到！")
 			return
 		end
-		local reload_module = function(module_name, starts_with_only)
-			-- Default to starts with only
-			if starts_with_only == nil then
-				starts_with_only = true
-			end
-
-			-- TODO: Might need to handle cpath / compiled lua packages? Not sure.
-			-- more info: https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/reload.lua
-			local matcher
-			if not starts_with_only then
-				matcher = function(pack)
-					return string.find(pack, module_name, 1, true)
-				end
-			else
-				local module_name_pattern = vim.pesc(module_name)
-				matcher = function(pack)
-					return string.find(pack, "^" .. module_name_pattern)
-				end
-			end
-
-			-- Handle impatient.nvim automatically.
-			local luacache = (_G.__luacache or {}).cache
-
-			for pack, _ in pairs(package.loaded) do
-				if matcher(pack) then
-					package.loaded[pack] = nil
-
-					if luacache then
-						luacache[pack] = nil
-					end
-				end
-			end
-		end
-
-		local r = function(module_name, config_path, starts_with_only)
-			reload_module(module_name, starts_with_only)
-			local ok, _ = pcall(require, config_path or module_name)
-			if not ok then
-				print("Error loading " .. config_path or module_name)
-				return
-			end
-		end
-		-- plugin reload
-		r("bufferline", "plugin-config.bufferline")
-		r("lualine", "plugin-config.lualine")
-		r("todo-comments", "plugin-config.todo-comments")
-		r("fidget", "plugin-config.fidget")
-		r("telescope", "plugin-config.telescope")
 		-- editor
 		-- ------------------------------
 		vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#F9FAFB", bg = "#2C323B" })
